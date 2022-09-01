@@ -3,19 +3,23 @@ import 'dart:math';
 
 class ABGame3{
   int maxtime = 7; //限制最大次數
-  int count = 0; //計算剩餘次數
+  int count = 0;
   int a = 0;
   int b = 0;
-  String result = "start"; //隨意給初始值，此變數接收playgame的return
+  String result = '請輸入猜數' ; //隨意給初始值，此變數接收playgame的return
 
   String playGame (String guess, String Ans){
+    a = 0;
+    b = 0;
     if (guess != null && guess.length == 3) { //確認他有東西並且長度為3
       int? guess_int = int.tryParse(guess); //確認他是數字
       if (guess_int != null) {
         String Ges = "$guess"; //提guess成字串
         if (Ges[0] != Ges[1] && Ges[0] != Ges[2] && Ges[1] != Ges[2]) { //去除使用者輸入重複數字的可能
           if (Ges.compareTo(Ans) == 0) {
-            return ("3A, 恭喜獲勝!"); //處理獲勝情況
+            result = "3A, 恭喜獲勝!";
+
+            return result; //處理獲勝情況
           }
           else {
             for (int i = 0; i < Ans.length; i++) {
@@ -29,20 +33,32 @@ class ABGame3{
           }
         }
         else {
-          return ("輸入不合法，有重複數字！"); //輸入3字元但有非數字的反饋
+          result = "輸入不合法，有重複數字！";
+
+          return result; //輸入3字元但有非數字的反饋
         }
       }
       else {
-        return ("輸入不合法，有非數字字元！"); //輸入3字元但有非數字的反饋
+        result = "輸入不合法，有非數字字元！";
+
+        return result; //輸入3字元但有非數字的反饋
       }
     }
     else {
-      return ("輸入不合法，null或非三位數！"); //輸入3字元但有非數字的反饋
+      result = "輸入不合法，null或非三位數！";
+
+      return result ; //輸入3字元但有非數字的反饋
     }
-    return ("$a A $b B, 請繼續");
+    result = "$a A $b B";
+    return result;
   }
 
-  String get_answer(){ //試著做了一個getter但不確定對不對
+  String  getResult(String guess, String Ans){
+    this.result = playGame(guess, Ans);
+    return this.result;
+  }
+
+  String get_answer(){
     var rng = Random();
     String c = 't';
 
@@ -60,13 +76,11 @@ class ABGame3{
 
   int start(){
     String _Ans = get_answer();
-
-    while (result != "3A, you win in $count turns!"){  //結束語或次數超過時跳出，顯示fail
+    while (result != "3A, you win"){  //結束語或次數超過時跳出，顯示fail
       a = 0;
       b = 0;
-      print ("3位數的AB game，計7次機會，已用$count 次");
+      print ("3位數的AB game，計7次機會");
       String? guess = stdin.readLineSync();
-      count++;
 
       if (guess != null){
         result = playGame(guess, _Ans);
@@ -80,12 +94,12 @@ class ABGame3{
     return 0;
   }
 
-  ABgame3(int maxtime, int a, int b, String result, int answer){
+  ABgame3(){
     this.maxtime = 7; //只寫需要控制的東西
   }
 }
 
 void main() {
-  ABGame3 abGame3 = ABGame3();
+  var  abGame3 = ABGame3();
   abGame3.start();
 }
